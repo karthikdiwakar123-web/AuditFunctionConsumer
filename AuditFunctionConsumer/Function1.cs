@@ -17,7 +17,7 @@ public class AuditFunctionConsumer
 
     [Function(nameof(AuditFunctionConsumer))]
     public async Task Run(
-        [ServiceBusTrigger("%ServiceBusConnection__queueName%", Connection = "ServiceBusConnection__fullyQualifiedNamespace")]
+        [ServiceBusTrigger("%ServiceBusConnection__queueName%", Connection = "ServiceBusConnection")]
         ServiceBusReceivedMessage message,
         ServiceBusMessageActions messageActions)
     {
