@@ -1,5 +1,7 @@
+using Azure.Identity;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -10,5 +12,15 @@ builder.ConfigureFunctionsWebApplication();
 builder.Services
     .AddApplicationInsightsTelemetryWorkerService()
     .ConfigureFunctionsApplicationInsights();
+
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddServiceBusAdministrationClientWithNamespace(
+        // Specify the fully qualified namespace
+        Environment.GetEnvironmentVariable("ServiceBusConnection__fullyQualifiedNamespace")
+        );
+    clientBuilder.UseCredential(new DefaultAzureCredential());
+});
+
 
 builder.Build().Run();
